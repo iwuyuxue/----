@@ -1,53 +1,53 @@
 #!/bin/bash
 
-if [ $1 ]; then
-	docker stop emby 2>/dev/null
-        docker rm emby 2>/dev/null
-	cpu_arch=$(uname -m)
-	case $cpu_arch in
-                "x86_64" | *"amd64"*)
-                        docker pull emby/embyserver:4.8.0.56
-			;;
-                "aarch64" | *"arm64"* | *"armv8"* | *"arm/v8"*)
-                        docker pull emby/embyserver_arm64v8:4.8.0.56
-                        ;;
-                *)
-                        echo "目前只支持intel64和amd64架构，你的架构是：$cpu_arch"
-                        exit 1
-                        ;;
-        esac
+# if [ $1 ]; then
+# 	docker stop emby 2>/dev/null
+#         docker rm emby 2>/dev/null
+# 	cpu_arch=$(uname -m)
+# 	case $cpu_arch in
+#                 "x86_64" | *"amd64"*)
+#                         docker pull emby/embyserver:4.8.0.56
+# 			;;
+#                 "aarch64" | *"arm64"* | *"armv8"* | *"arm/v8"*)
+#                         docker pull emby/embyserver_arm64v8:4.8.0.56
+#                         ;;
+#                 *)
+#                         echo "目前只支持intel64和amd64架构，你的架构是：$cpu_arch"
+#                         exit 1
+#                         ;;
+#         esac
 	
-	docker_exist=$(docker images |grep emby/embyserver |grep 4.8.0.56)
-	if [ -z "$docker_exist" ]; then
-		echo "拉取镜像失败，请检查网络，或者翻墙后再试"
-		exit 1
-	fi
+# 	docker_exist=$(docker images |grep emby/embyserver |grep 4.8.0.56)
+# 	if [ -z "$docker_exist" ]; then
+# 		echo "拉取镜像失败，请检查网络，或者翻墙后再试"
+# 		exit 1
+# 	fi
 
-        if [ $2 ]; then
-		if [ -s $2/docker_address.txt ]; then
-			docker_addr=$(head -n1 $2/docker_address.txt)
-		else
-			echo "请先配置 $2/docker_address.txt 后重试"
-			exit 1	
-		fi
-	else
-		if [ -s /etc/xiaoya/docker_address.txt ]; then
-			docker_addr=$(head -n1 /etc/xiaoya/docker_address.txt)
-		else
-                        echo "请先配置 /etc/xiaoya/docker_address.txt 后重试"
-                        exit 1
-                fi
-	fi
+#         if [ $2 ]; then
+# 		if [ -s $2/docker_address.txt ]; then
+# 			docker_addr=$(head -n1 $2/docker_address.txt)
+# 		else
+# 			echo "请先配置 $2/docker_address.txt 后重试"
+# 			exit 1	
+# 		fi
+# 	else
+# 		if [ -s /etc/xiaoya/docker_address.txt ]; then
+# 			docker_addr=$(head -n1 /etc/xiaoya/docker_address.txt)
+# 		else
+#                         echo "请先配置 /etc/xiaoya/docker_address.txt 后重试"
+#                         exit 1
+#                 fi
+# 	fi
 
-	echo "测试xiaoya的联通性.......尝试连接 $docker_addr"
-	wget -q -T 5 -O /tmp/test.md "$docker_addr/README.md"
-	test_size=$(du -k /tmp/test.md |cut -f1)
-	if [[ "$test_size" -eq 196 ]] || [[ "$test_size" -eq 0 ]]; then
-		echo "请检查xiaoya是否正常运行后再试"
-		exit 1
-	else
-		echo "xiaoya容器正常工作"	
-	fi
+# 	echo "测试xiaoya的联通性.......尝试连接 $docker_addr"
+# 	wget -q -T 5 -O /tmp/test.md "$docker_addr/README.md"
+# 	test_size=$(du -k /tmp/test.md |cut -f1)
+# 	if [[ "$test_size" -eq 196 ]] || [[ "$test_size" -eq 0 ]]; then
+# 		echo "请检查xiaoya是否正常运行后再试"
+# 		exit 1
+# 	else
+# 		echo "xiaoya容器正常工作"	
+# 	fi
 
 	# echo "清理媒体库原来保存的元数据和配置......."
  #        mkdir -p $1/temp
