@@ -102,21 +102,21 @@
 			#docker restart emby
 			echo "一键全家桶全部安装完成"
 			;;
-# 		"aarch64" | *"arm64"* | *"armv8"* | *"arm/v8"*)
-# 		        docker run -d --name emby -v $1/config:/config -v $1/xiaoya:/media --net=host  --user 0:0 --restart always emby/embyserver_arm64v8:4.8.0.56
-# 			#docker cp /tmp/Emby.Server.Implementations.dll emby:/system/
-#                         #docker exec -i emby chmod 644 /system/Emby.Server.Implementations.dll
-#                         #docker restart emby
-# 			echo "一键全家桶全部安装完成"
-#                         ;;
-# 		*)
-# 			echo "目前只支持intel64和amd64架构，你的架构是：$cpu_arch"
-# 			exit 1
-# 			;;
-# 	esac		
+		"aarch64" | *"arm64"* | *"armv8"* | *"arm/v8"*)
+		        docker run -d --name emby -v $1/config:/config -v $1/xiaoya:/media --net=host  --user 0:0 --restart always emby/embyserver_arm64v8:4.8.0.56
+			#docker cp /tmp/Emby.Server.Implementations.dll emby:/system/
+                        #docker exec -i emby chmod 644 /system/Emby.Server.Implementations.dll
+                        #docker restart emby
+			echo "一键全家桶全部安装完成"
+                        ;;
+		*)
+			echo "目前只支持intel64和amd64架构，你的架构是：$cpu_arch"
+			exit 1
+			;;
+	esac		
 
-# else
-# 	echo "请在命令后输入 -s /媒体库目录 再重试"
-# 	exit 1
-# fi
+else
+	echo "请在命令后输入 -s /媒体库目录 再重试"
+	exit 1
+fi
 
