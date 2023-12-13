@@ -3,11 +3,26 @@
 path=$(docker inspect -f {{.HostConfig.Binds}} xiaoya |tr -d "[" |tr -d "]")
 echo $path
 echo "$path"
+
 #if [ ! $path ]; then
 # 注意中括号左右得有空格
 if [ ! $path ]; then
 echo "路径不存在"
 else
-echo "路径是：$path"
-echo “docker run -d --restart=always --name="xiaoya" -p 5678:80 -p 2345:2345 -p 2346:2346 -v $path xiaoyaliu/alist:latest”
+echo "映射路径是：$path"
+echo "开始停止xiaoya容器"
+docker_stoped=(docker stop xiaoya)
+if [ ! $docker_stoped ];then
+echo "停止失败，请重试"
+else
+echo "停止成功，开始移除容器"
+docker_rmed=(docker rm xiaoya)
+if [ ! $docker_rmed ];then
+echo "移除失败，请重试"
+else
+echo "停止成功，开始移除镜像容器"
 fi
+docker rmi xiaoyaliu/alist:latest
+docker pull xiaoyaliu/alist:latest
+docker run -d --restart=always --name="xiaoya" -p 5678:80 -p 2345:2345 -p 2346:2346 -v $path xiaoyaliu/alist:latest
+
