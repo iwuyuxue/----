@@ -1,8 +1,10 @@
 #!/bin/bash
+#变量赋值的等号两边不能有空格
 path=$(docker inspect -f {{.HostConfig.Binds}} xiaoya |tr -d "[" |tr -d "]")
 echo $path
 echo "$path"
 #if [ ! $path ]; then
+# 注意中括号左右得有空格
 if [ ! $path ]; then
 echo "路径不存在"
 else
