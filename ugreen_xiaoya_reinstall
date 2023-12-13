@@ -1,8 +1,10 @@
 #!/bin/bash
 #变量赋值的等号两边不能有空格
 path=$(docker inspect -f {{.HostConfig.Binds}} xiaoya |tr -d "[" |tr -d "]")
-echo $path
-echo "$path"
+echo "映射路径：$path"
+
+path2=$(docker inspect -f {{.HostConfig.Binds}} xiaoya |tr -d "[" |tr -d "]" |cut -d / -f 2,3-6)
+echo "真实路径：/$path2"
 
 #if [ ! $path ]; then
 # 注意中括号左右得有空格
@@ -25,4 +27,16 @@ fi
 docker rmi xiaoyaliu/alist:latest
 docker pull xiaoyaliu/alist:latest
 docker run -d --restart=always --name="xiaoya" -p 5678:80 -p 2345:2345 -p 2346:2346 -v $path xiaoyaliu/alist:latest
+
+cat > /$path2/xiaoya-reinstall.txt<< EOF
+docker stop xiaoya
+docker rm xiaoya
+docker rmi xiaoyaliu/alist:latest
+docker pull xiaoyaliu/alist:latest
+EOF
+
+echo "docker run -d --restart=always --name="xiaoya" -p 5678:80 -p 2345:2345 -p 2346:2346 -v $path xiaoyaliu/alist:latest">> /$path2/xiaoya-reinstall.txt
+
+
+
 
