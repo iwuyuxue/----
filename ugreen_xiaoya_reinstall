@@ -2,8 +2,8 @@
 path=$(docker inspect -f {{.HostConfig.Binds}} xiaoya |tr -d "[" |tr -d "]")
 echo $path
 echo "$path"
+#if [ ! $path ]; then
 if [ ! $path ]; then
-#if [[ ! $path]]; then
 echo "路径不存在"
 else
 echo "路径是：$path"
