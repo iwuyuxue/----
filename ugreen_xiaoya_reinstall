@@ -1,6 +1,7 @@
 #!/bin/bash
-path=$(docker inspect -f {{.HostConfig.Binds}} xiaoya | tr -d "[" | tr -d "]")
+path=$(docker inspect -f {{.HostConfig.Binds}} xiaoya |tr -d "[" |tr -d "]")
 echo $path
+echo "$path"
 if [ ! $path]; then
 echo "路径不存在"
 else
